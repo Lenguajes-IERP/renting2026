@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Renting Application</title>
+</head>
+<body>
+    Hola <th:text="${miNombre}"/>
+    ${miNombre} 
+    <h1>Welcome to the Renting Application!</h1>
+    <p>This is the home page of our application.</p>
+
+    <h2>Lista de peliculas</h2>
+ 
+    <ul>
+        <li th:each="pelicula : ${peliculas}" th:text="${pelicula}"></li>
+    </ul>
+
+    
+        
+    </ul>
+</html>

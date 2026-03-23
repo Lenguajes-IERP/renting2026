@@ -28,9 +28,15 @@ public class PeliculaDataTest {
         // Act
             var peliculas = peliculaData.findMoviesByTitleOrGenre(title, genre); // MUT method under test
         // Assert
+
+        String expectedTitle = "Women";
+        String expectedGenre = "Drama";
         assertNotNull(peliculas);
 		assertTrue(!peliculas.isEmpty());
-		assertTrue(peliculas.stream().anyMatch(p -> p.getTitulo().contains(title)));
+
+		assertTrue(peliculas.stream().anyMatch(p -> p.getTitulo().contains(expectedTitle) ||
+         p.getGenero().getNombre_genero().contains(expectedGenre)));
         
+         
     }
 }

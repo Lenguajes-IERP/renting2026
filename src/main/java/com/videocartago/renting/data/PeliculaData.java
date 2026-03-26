@@ -34,17 +34,19 @@ public class PeliculaData {
                     a.nombre_actor,
                     a.apellidos_actor
                 FROM Pelicula p
-                LEFT JOIN Genero g 
+                INNER JOIN Genero g 
                     ON p.genero_id = g.genero_id
                 LEFT JOIN PeliculaActor pa 
                     ON p.pelicula_id = pa.pelicula_id
                 LEFT JOIN Actor a 
                     ON pa.actor_id = a.actor_id
-                WHERE p.titulo LIKE ?
-                or g.nombre_genero LIKE ?
+                WHERE LOWER(p.titulo) LIKE ?
+                or LOWER(g.nombre_genero) LIKE ?
                 """;
-                String titleLike = "%" + title + "%";
-                String genreLike = "%" + genre + "%";
+             title = title.toLowerCase();
+             genre = genre.toLowerCase();
+            String titleLike = (title == null || title=="" ? "" : "%" + title.trim() + "%");
+            String genreLike = (genre == null || genre=="" ? "" : "%" + genre.trim() + "%");
             // Pasamos el SQL, la instancia del extractor y los parámetros
                 return jdbcTemplate.query(
                     sqlSelect, 
@@ -69,7 +71,7 @@ class PeliculaExtractor implements ResultSetExtractor<List<Pelicula>> {
                 pelicula.setSubtitulada(rs.getBoolean("subtitulada"));
                 pelicula.setEstreno(rs.getBoolean("estreno"));
                 pelicula.getGenero().setGeneroId(rs.getInt("genero_id"));
-                pelicula.getGenero().setNombre_genero(rs.getString("nombre_genero"));
+                pelicula.getGenero().setNombreGenero(rs.getString("nombre_genero"));
                 map.put(peliculaId, pelicula);
             }//if
             int actorId = rs.getInt("actor_id");

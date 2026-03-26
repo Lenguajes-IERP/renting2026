@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mantenimiento de peliculas</title>
+</head>
+<body>
+	<div class="container">
+		<h1>Mantenimiento de películas</h1>
+		<form action="#" th:action="@{/findMovies}"	method="post">
+				Título de la película: <input type="text" name="titulo" /> <br>  <br>
+				Nombre género: <input type="text" name="genero" />
+				<input type="submit" value="Buscar" />  
+		</form><br>
+		<table >
+			<tr>
+				<th>Código</th>
+				<th>Título</th>
+				<th>Género</th>
+				<th>¿Subtitulada?</th>
+				<th>Índice</th>
+			</tr>
+			<tr th:each="pelicula : ${peliculas}">
+				<td><span th:text="${pelicula.peliculaId}"></span></td>
+				<td><span th:text="${pelicula.titulo}"></span></td>
+				<td><span th:text="${pelicula.genero.nombreGenero}"></span></td>
+				<td><span th:text="${pelicula.subtitulada}"></span></td>
+				<td><span th:text="${peliculaStat.count}"></span></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

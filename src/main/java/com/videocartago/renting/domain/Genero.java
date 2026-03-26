@@ -2,7 +2,7 @@ package com.videocartago.renting.domain;
 
 public class Genero {
     private int generoId;
-    private String nombre_genero;
+    private String nombreGenero;
    
     public Genero() {
     }
@@ -15,12 +15,15 @@ public class Genero {
         this.generoId = generoId;
     }
  
-    public String getNombre_genero() {
-        return nombre_genero;
+    public String getNombreGenero() {
+        return nombreGenero
+;
     }
  
-    public void setNombre_genero(String nombre_genero) {
-        this.nombre_genero = nombre_genero;
+    public void setNombreGenero(String nombreGenero
+
+    ) {
+        this.nombreGenero = nombreGenero;
     }
    
 }

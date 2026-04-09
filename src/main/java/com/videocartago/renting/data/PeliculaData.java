@@ -2,6 +2,7 @@ package com.videocartago.renting.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.videocartago.renting.domain.Actor;
 import com.videocartago.renting.domain.Pelicula;
@@ -55,6 +60,29 @@ public class PeliculaData {
                     genreLike
                 );
     }
+     @Transactional  // The @Transactional annotation bounds the method execution in a transaction context as it is performing a database update.
+	public Pelicula save(Pelicula pelicula) throws SQLException{
+        // 
+			SimpleJdbcCall simpleJdbcCallPelicula = new SimpleJdbcCall(jdbcTemplate).
+					withCatalogName("dbo").
+					withProcedureName("InsertPelicula").withoutProcedureColumnMetaDataAccess().
+					declareParameters(new SqlOutParameter("@pelicula_id", Types.INTEGER)).
+					declareParameters(new SqlParameter("@titulo", Types.VARCHAR)).
+					declareParameters(new SqlParameter("@subtitulada", Types.BIT)).
+					declareParameters(new SqlParameter("@estreno", Types.BIT)).
+					declareParameters(new SqlParameter("@genero_id", Types.INTEGER));
+			Map<String, Object> outParameters = simpleJdbcCallPelicula.execute(pelicula.getTitulo(), pelicula.isSubtitulada(), pelicula.isEstreno(), pelicula.getGenero().getGeneroId());
+			pelicula.setPeliculaId(Integer.parseInt(outParameters.get("@pelicula_id").toString()));
+			
+			SimpleJdbcCall simpleJdbcCallPeliculaActor = new SimpleJdbcCall(jdbcTemplate).
+					withCatalogName("dbo").
+					withProcedureName("InsertPeliculaActor").withoutProcedureColumnMetaDataAccess().
+					declareParameters(new SqlParameter("@pelicula_id", Types.INTEGER)).
+					declareParameters(new SqlParameter("@actor_id", Types.INTEGER));
+			for(Actor actor:pelicula.getActores())
+				simpleJdbcCallPeliculaActor.execute(pelicula.getPeliculaId(), actor.getActorId());
+		return pelicula;
+	}
 }
 class PeliculaExtractor implements ResultSetExtractor<List<Pelicula>> {
     @Override
@@ -85,4 +113,6 @@ class PeliculaExtractor implements ResultSetExtractor<List<Pelicula>> {
         } //while
         return new ArrayList<Pelicula>(map.values());
     } //extract Data  
+    
+   
 }

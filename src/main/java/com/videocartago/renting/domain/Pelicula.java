@@ -16,6 +16,15 @@ public class Pelicula {
         this.actores = new ArrayList<Actor>(); // Inicializar con una lista vacía
     }
  
+    public Pelicula(int peliculaId, String titulo, boolean subtitulada, boolean estreno, Genero genero,
+            List<Actor> actores) {
+        this.peliculaId = peliculaId;
+        this.titulo = titulo;
+        this.subtitulada = subtitulada;
+        this.estreno = estreno;
+        this.genero = genero;
+        this.actores = actores;
+    }
     public int getPeliculaId() {
         return peliculaId;
     }

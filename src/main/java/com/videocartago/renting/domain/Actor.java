@@ -7,6 +7,11 @@ public class Actor {
    
     public Actor() {
     }
+    public Actor(int actorId, String nombreActor, String apellidosActor) {
+        this.actorId = actorId;
+        this.nombreActor = nombreActor;
+        this.apellidosActor = apellidosActor;
+    }
  
     public int getActorId() {
         return actorId;

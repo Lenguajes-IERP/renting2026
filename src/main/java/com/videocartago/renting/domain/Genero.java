@@ -6,6 +6,10 @@ public class Genero {
    
     public Genero() {
     }
+    public Genero(int generoId, String nombreGenero) {
+        this.generoId = generoId;
+        this.nombreGenero = nombreGenero;
+    }
  
     public int getGeneroId() {
         return generoId;

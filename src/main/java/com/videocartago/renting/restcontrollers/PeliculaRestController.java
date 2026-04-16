@@ -46,8 +46,9 @@ public class PeliculaRestController {
                 try {
 			this.peliculaBusiness.save(pelicula);
 		} catch (SQLException e) {
-			// TODO what to do with this
-			e.printStackTrace();
+			// Nunca dejes un catch vacío o solo con printStackTrace en producción
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body("Error al guardar la película: " + e.getMessage());
 		}
       // TODO what to return..revisarlo
       return ResponseEntity.status(HttpStatus.CREATED).body(pelicula.getPeliculaId());

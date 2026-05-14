@@ -1,5 +1,7 @@
 package com.videocartago.renting.data;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -7,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -25,6 +29,8 @@ import com.videocartago.renting.domain.Pelicula;
 public class PeliculaData {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private DataSource dataSource;
 
     public List<Pelicula> findMoviesByTitleOrGenre(String title, String genre) {
         String sqlSelect = """
@@ -83,6 +89,43 @@ public class PeliculaData {
 				simpleJdbcCallPeliculaActor.execute(pelicula.getPeliculaId(), actor.getActorId());
 		return pelicula;
 	}
+
+    public void remove(int codPelicula) throws SQLException {
+		Connection conexion = null;
+		try {
+			conexion = dataSource.getConnection();
+			conexion.setAutoCommit(false);
+			String sqlDeletePeliculaActor = "DELETE FROM PeliculaActor "
+					+ "WHERE pelicula_id = ?";
+			String sqlDeletePelicula = "DELETE FROM Pelicula "
+					+ "WHERE pelicula_idxxx = ?";
+
+			// Eliminar los registros asociados en la tabla Pelicula_Actor
+			PreparedStatement statementPeliculaActor =
+					conexion.prepareStatement(sqlDeletePeliculaActor);
+			statementPeliculaActor.setInt(1, codPelicula);
+			statementPeliculaActor.executeUpdate();
+			statementPeliculaActor.close();
+
+			// Eliminar los registros asociados en la tabla Pelicula
+			PreparedStatement statementPelicula =
+					conexion.prepareStatement(sqlDeletePelicula);
+			statementPelicula.setInt(1, codPelicula);
+			statementPelicula.executeUpdate();
+			statementPelicula.close();
+
+			conexion.commit();
+		} catch (SQLException e) {
+			if (conexion!=null) {
+					conexion.rollback();
+				}
+			throw new SQLException(e);
+		}finally {
+			if (conexion != null)
+				conexion.close();
+		}
+			
+	}//remove
 }
 class PeliculaExtractor implements ResultSetExtractor<List<Pelicula>> {
     @Override

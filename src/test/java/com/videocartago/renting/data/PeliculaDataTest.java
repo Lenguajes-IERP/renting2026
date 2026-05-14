@@ -1,14 +1,13 @@
 package com.videocartago.renting.data;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.LinkedList;
-import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,25 @@ public class PeliculaDataTest {
 	private PeliculaData peliculaData;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Test
+	@Sql (scripts = "/remove_pelicula_con_actores.sql", 
+    executionPhase = ExecutionPhase.BEFORE_TEST_METHOD,
+    config = @SqlConfig(separator = "GO")) 
+    
+    public void givenExistingMovieWithActors_whenRemoveMovie_thenSuccessfullyRemoved() {
+		//Arrange
+		// Se inyectan datos en la base de datos para asegurar que la película por
+        //  eliminar exista y tenga actores relacionados.
+        // Retrieve generated genero_id
+       Integer peliculaIdBorrar = jdbcTemplate.queryForObject("SELECT IDENT_CURRENT('Pelicula')", Integer.class);
+
+		//Act
+		assertDoesNotThrow(() -> peliculaData.remove(peliculaIdBorrar));
+		// Assert
+        assertTrue(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM PeliculaActor WHERE pelicula_id = ?", Integer.class, peliculaIdBorrar) == 0);
+        assertTrue(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM Pelicula WHERE pelicula_id = ?", Integer.class, peliculaIdBorrar) == 0);
+	}
 
     //Gerkhin
     @Test

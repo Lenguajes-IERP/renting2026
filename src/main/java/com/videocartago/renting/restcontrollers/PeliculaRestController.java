@@ -35,7 +35,7 @@ public class PeliculaRestController {
    private PeliculaMapper peliculaMapper; // Inject the mapper
 	
 	
-    @PostMapping("/")
+   @PostMapping
        public ResponseEntity<?> createPelicula(@Validated @RequestBody PeliculaCreationDTO peliculaDTO,
                  BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -56,7 +56,7 @@ public class PeliculaRestController {
       // TODO what to return..revisarlo
       return ResponseEntity.status(HttpStatus.CREATED).body(pelicula.getPeliculaId());
    }
-   @GetMapping(value="/" ) // TODO PENDIENTE
+   @GetMapping // TODO PENDIENTE
 	public String findMovies(@RequestParam("titulo") String titulo,
 			@RequestParam("genero") String genero) {  
                 var peliculas = peliculaBusiness.findMoviesByTitleOrGenre(titulo, genero);

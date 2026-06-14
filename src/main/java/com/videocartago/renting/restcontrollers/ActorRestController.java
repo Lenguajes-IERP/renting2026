@@ -23,7 +23,7 @@ public class ActorRestController {
 	
 	
 	@GetMapping
-	public ResponseEntity<List<ActorDTO>> getAllGeneros() {
+	public ResponseEntity<List<ActorDTO>> GetAllActors() {
 		List<Actor> actores = actorBusiness.findAll();
 
 		if (actores.isEmpty()) {

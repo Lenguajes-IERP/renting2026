@@ -1,4 +1,4 @@
-package com.videocartago.renting.restcontrollers;
+package com.videocartago.renting.controller.rest;
 
 import java.util.List;
 import java.util.stream.Collectors;

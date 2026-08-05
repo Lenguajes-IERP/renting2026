@@ -1,4 +1,4 @@
-package com.videocartago.renting.restcontrollers;
+package com.videocartago.renting.controller.rest;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -56,11 +56,11 @@ public class PeliculaRestController {
       // TODO what to return..revisarlo
       return ResponseEntity.status(HttpStatus.CREATED).body(pelicula.getPeliculaId());
    }
-   @GetMapping // TODO PENDIENTE
-	public String findMovies(@RequestParam("titulo") String titulo,
-			@RequestParam("genero") String genero) {  
-                var peliculas = peliculaBusiness.findMoviesByTitleOrGenre(titulo, genero);
-		return "findMovies";
-	}
+   @GetMapping
+   public ResponseEntity<List<Pelicula>> findMovies(@RequestParam("titulo") String titulo,
+         @RequestParam("genero") String genero) {
+      List<Pelicula> peliculas = peliculaBusiness.findMoviesByTitleOrGenre(titulo, genero);
+      return ResponseEntity.ok(peliculas);
+   }
 	
 }

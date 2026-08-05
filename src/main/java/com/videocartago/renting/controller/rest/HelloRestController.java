@@ -1,4 +1,4 @@
-package com.videocartago.renting.restcontrollers;
+package com.videocartago.renting.controller.rest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

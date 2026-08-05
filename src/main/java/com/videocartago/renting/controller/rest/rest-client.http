@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:8084/renting
+
+### Search movies by title or genre
+GET {{baseUrl}}/peliculas?titulo=Little Women&genero=Drama
+Accept: application/json
+Content-Type: application/json
+
+
+### Create movie
+POST {{baseUrl}}/peliculas
+Content-Type: application/json
+Accept: application/json
+
+{
+	"titulo": "The Matrix",
+	"subtitulada": true,
+	"estreno": false,
+	"genero": {
+		"generoId": 1
+	},
+	"actores": [
+		{
+			"actorId": 1
+		},
+		{
+			"actorId": 2
+		}
+	]
+}
+

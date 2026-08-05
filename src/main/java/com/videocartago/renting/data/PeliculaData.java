@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class PeliculaData {
     @Autowired
     private DataSource dataSource;
 
-    public List<Pelicula> findMoviesByTitleOrGenre(String title, String genre) {
+   public List<Pelicula> findMoviesByTitleOrGenre(String title, String genre) {
         String sqlSelect = """
                 SELECT 
                     p.pelicula_id,
@@ -66,6 +67,7 @@ public class PeliculaData {
                     genreLike
                 );
     }
+
      @Transactional  // The @Transactional annotation bounds the method execution in a transaction context as it is performing a database update.
 	public Pelicula save(Pelicula pelicula) throws SQLException{
         // 

@@ -10,6 +10,7 @@ import com.videocartago.renting.domain.Actor;
 
 @Service
 public class ActorBusiness {
+	
 	@Autowired
 	private ActorData actorData;
 	
